@@ -1,5 +1,5 @@
-from separationsverktyg.app import db, create_app
-from separationsverktyg.models import User
+from app import db, create_app
+from models import User
 
 app = create_app()
 app.app_context().push()

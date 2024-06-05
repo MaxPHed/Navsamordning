@@ -1,4 +1,4 @@
-from .app import db
+from app import db
 from datetime import datetime, timedelta
 from math import radians, cos, sin, sqrt, atan2
 import json
@@ -73,7 +73,7 @@ class Route(db.Model):
 
     def calculate_times(self):
 
-        with open('static/airbases.json', 'r') as file:
+        with open('separationsverktyg/static/airbases.json', 'r') as file:
             airbases = json.load(file)
         start_time = datetime.strptime(self.time, "%H:%M")
         previous_time = start_time

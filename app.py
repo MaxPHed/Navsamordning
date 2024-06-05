@@ -16,7 +16,7 @@ def create_app():
     migrate.init_app(app, db)
 
     with app.app_context():
-        from .models import Route, Waypoint, User
+        from models import Route, Waypoint, User
         db.create_all()
 
     @app.route('/')
