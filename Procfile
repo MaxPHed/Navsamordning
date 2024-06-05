@@ -1,1 +1,1 @@
-web: gunicorn run:app
+web: gunicorn separationsverktyg.run:app
