@@ -1,3 +1,4 @@
+import os
 from flask import Flask, request, jsonify, render_template, session
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -9,7 +10,7 @@ migrate = Migrate()
 
 def create_app():
     app = Flask(__name__, template_folder='static/templates')
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///routes.db'
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL') or 'sqlite:///routes.db'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['SECRET_KEY'] = 'your_secret_key'
     db.init_app(app)
