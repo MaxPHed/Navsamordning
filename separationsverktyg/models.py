@@ -73,7 +73,7 @@ class Route(db.Model):
 
     def calculate_times(self):
 
-        with open('static/airbases.json', 'r') as file:
+        with open('separationsverktyg/static/airbases.json', 'r') as file:
             airbases = json.load(file)
         start_time = datetime.strptime(self.time, "%H:%M")
         previous_time = start_time
@@ -114,8 +114,8 @@ class Waypoint(db.Model):
     altitude = db.Column(db.Float, nullable=True)
     route_id = db.Column(db.Integer, db.ForeignKey('route.id'), nullable=False)
     distance_from_last_wp = db.Column(db.Float, nullable=True)
-    time_from_last_wp = db.Column(db.String(5), nullable=True)
-    time_at_waypoint = db.Column(db.String(5), nullable=True)
+    time_from_last_wp = db.Column(db.String(50), nullable=True)
+    time_at_waypoint = db.Column(db.String(50), nullable=True)
 
     def __init__(self, **kwargs):
         super(Waypoint, self).__init__(**kwargs)
