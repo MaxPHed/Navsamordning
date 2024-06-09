@@ -1,11 +1,11 @@
 import os
-from dotenv import load_dotenv
+import sys
 from flask import Flask, request, jsonify, render_template, session
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from functools import wraps
 
-load_dotenv()
+sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
 
 db = SQLAlchemy()
 migrate = Migrate()
@@ -13,11 +13,15 @@ migrate = Migrate()
 
 def create_app():
     app = Flask(__name__, template_folder='static/templates')
-    app.config[
-        'SQLALCHEMY_DATABASE_URI'] = f"postgresql://{os.getenv('DBUSER')}:{os.getenv('DBPASS')}@{os.getenv('DBHOST')}/{os.getenv('DBNAME')}"
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
-    print(os.getenv('DBUSER'))
+
+    # Load configuration based on environment
+    if 'WEBSITE_HOSTNAME' not in os.environ:
+        print("Loading config.development and environment variables from .env file.")
+        app.config.from_object('config.development.Config')
+    else:
+        print("Loading config.production.")
+        app.config.from_object('config.production.Config')
+
     db.init_app(app)
     migrate.init_app(app, db)
 
