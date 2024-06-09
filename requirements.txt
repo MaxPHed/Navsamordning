@@ -19,4 +19,3 @@ psycopg2
 wheel~=0.38.4
 setuptools~=65.5.1
 packaging~=24.0
-python-dotenv~=1.0.1

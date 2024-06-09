@@ -31,7 +31,9 @@ def create_app():
 
     @app.route('/')
     def index():
-        return render_template('index.html')
+        user_id = session['user_id']
+        user = User.query.get(user_id)
+        return render_template('index.html', user=user.to_dict())
 
     def login_required(f):
         @wraps(f)
@@ -65,10 +67,14 @@ def create_app():
     @login_required
     def manage_routes():
         user_id = session['user_id']
+        user = User.query.get(user_id)
 
         if request.method == 'GET':
-            routes = Route.query.all()  # Returerar alla routes
-            return jsonify([route.to_dict() for route in routes])
+            routes = Route.query.all()  # Returnerar alla routes
+            return jsonify({
+                'user': user.to_dict(),
+                'routes': [route.to_dict() for route in routes]
+            })
 
         if request.method == 'POST':
             data = request.get_json()
