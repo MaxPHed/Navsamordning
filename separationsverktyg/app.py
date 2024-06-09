@@ -1,8 +1,11 @@
 import os
+from dotenv import load_dotenv
 from flask import Flask, request, jsonify, render_template, session
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from functools import wraps
+
+load_dotenv()
 
 db = SQLAlchemy()
 migrate = Migrate()
@@ -10,14 +13,16 @@ migrate = Migrate()
 
 def create_app():
     app = Flask(__name__, template_folder='static/templates')
-    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL') or 'sqlite:///routes.db'
+    app.config[
+        'SQLALCHEMY_DATABASE_URI'] = f"postgresql://{os.getenv('DBUSER')}:{os.getenv('DBPASS')}@{os.getenv('DBHOST')}/{os.getenv('DBNAME')}"
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    app.config['SECRET_KEY'] = 'your_secret_key'
+    app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
+    print(os.getenv('DBUSER'))
     db.init_app(app)
     migrate.init_app(app, db)
 
     with app.app_context():
-        from models import Route, Waypoint, User
+        from .models import Route, Waypoint, User
         db.create_all()
 
     @app.route('/')

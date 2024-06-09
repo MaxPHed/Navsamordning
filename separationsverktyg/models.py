@@ -1,4 +1,4 @@
-from app import db
+from .app import db
 from datetime import datetime, timedelta
 from math import radians, cos, sin, sqrt, atan2
 import json
@@ -10,7 +10,7 @@ class User(db.Model):
     username = db.Column(db.String(50), nullable=False, unique=True)
     email = db.Column(db.String(120), nullable=False, unique=True)
     phone = db.Column(db.String(20), nullable=True)
-    password_hash = db.Column(db.String(128), nullable=False)  # Lagras hashas lösenord
+    password_hash = db.Column(db.String(256), nullable=False)  # Lagras hashas lösenord
 
     routes = db.relationship('Route', backref='user', lazy=True)
 
@@ -73,7 +73,7 @@ class Route(db.Model):
 
     def calculate_times(self):
 
-        with open('separationsverktyg/static/airbases.json', 'r') as file:
+        with open('static/airbases.json', 'r') as file:
             airbases = json.load(file)
         start_time = datetime.strptime(self.time, "%H:%M")
         previous_time = start_time
