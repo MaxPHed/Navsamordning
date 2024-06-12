@@ -71,8 +71,10 @@ const loadRouteDataFromServer = async () => {
   try {
     const response = await fetch("/routes", { method: "GET" });
     const data = await response.json();
+    const user = data.user; // Extract the user data
+    const routes = data.routes; // Extract the routes data
     const today = document.getElementById("date").value;
-    const routesWithAttributes = data.map((route, index) => ({
+    const routesWithAttributes = routes.map((route, index) => ({
       ...route,
       color: getColor(index),
       visible: route.date === today,
