@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify, render_template, session
 from functools import wraps
-from .models import db, User, Route, Waypoint
+from models import db, User, Route, Waypoint
 
 bp = Blueprint('main', __name__)
 
