@@ -105,23 +105,28 @@ def manage_routes():
 
 @bp.route('/routes/<int:id>', methods=['PUT', 'DELETE'])
 def update_delete_route(id):
-    route = Route.query.get_or_404(id)
-    if request.method == 'PUT':
-        data = request.get_json()
-        route.date = data.get('date', route.date)
-        route.time = data.get('time', route.time)
-        route.callsign = data.get('callsign', route.callsign)
-        route.units = data.get('units', route.units)
-        route.phone = data.get('phone', route.phone)
-        route.start = data.get('start', route.start)
-        route.landing = data.get('landing', route.landing)
-        db.session.commit()
-        return jsonify(route.to_dict())
+    try:
+        route = Route.query.get_or_404(id)
+        if request.method == 'PUT':
+            data = request.get_json()
+            route.date = data.get('date', route.date)
+            route.time = data.get('time', route.time)
+            route.callsign = data.get('callsign', route.callsign)
+            route.units = data.get('units', route.units)
+            route.phone = data.get('phone', route.phone)
+            route.start = data.get('start', route.start)
+            route.landing = data.get('landing', route.landing)
+            db.session.commit()
+            return jsonify(route.to_dict())
 
-    if request.method == ['DELETE']:
-        db.session.delete(route)
-        db.session.commit()
-        return '', 204
+        if request.method == 'DELETE':
+            db.session.delete(route)
+            db.session.commit()
+            return '', 204
+    except Exception as e:
+        db.session.rollback()
+        print({'error': str(e)})
+        return jsonify({'error': str(e)}), 500
 
 
 @bp.route('/waypoints/<int:id>', methods=['PUT', 'DELETE'])
