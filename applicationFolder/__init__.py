@@ -15,10 +15,10 @@ def create_app():
 
     if 'WEBSITE_HOSTNAME' not in os.environ:
         print("Loading config.development and environment variables from .env file.")
-        app.config.from_object('app.development.Config')
+        app.config.from_object('applicationFolder.development.Config')
     else:
         print("Loading config.production.")
-        app.config.from_object('app.production')
+        app.config.from_object('applicationFolder.production')
 
     print(f"SQLALCHEMY_DATABASE_URI: {app.config.get('SQLALCHEMY_DATABASE_URI')}")
 
