@@ -1,8 +1,8 @@
-from .app import db
 from datetime import datetime, timedelta
 from math import radians, cos, sin, sqrt, atan2
 import json
 from werkzeug.security import generate_password_hash, check_password_hash
+from . import db  # Importera db från den initierade appen
 
 
 class User(db.Model):
@@ -74,7 +74,7 @@ class Route(db.Model):
 
     def calculate_times(self):
 
-        with open('separationsverktyg/static/airbases.json', 'r') as file:
+        with open('static/airbases.json', 'r') as file:
             airbases = json.load(file)
         start_time = datetime.strptime(self.time, "%H:%M")
         previous_time = start_time

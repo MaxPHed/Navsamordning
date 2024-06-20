@@ -1,10 +1,9 @@
-from separationsverktyg.app import db, create_app
-from separationsverktyg.models import User
+# from app import db, app
+# from models import User
 
-app = create_app()
-app.app_context().push()
+# app.app_context().push()
 
-new_user = User(username="Max", email="max@max.com")
-new_user.set_password('password')
-db.session.add(new_user)
-db.session.commit()
+# new_user = User(username="Max", email="max@max.com")
+# new_user.set_password('password')
+# db.session.add(new_user)
+# db.session.commit()

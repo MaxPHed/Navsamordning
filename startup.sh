@@ -1,11 +1,4 @@
-#!/bin/bash
-
-echo "Starting application"
-
-# Activate the virtual environment
-source /home/site/wwwroot/venv/bin/activate
-
 flask db upgrade
-
-# Start the application
-exec gunicorn --bind 0.0.0.0:8000 run:app
+gunicorn --workers 2 --threads 4 --timeout 60 --access-logfile \
+    '-' --error-logfile '-' --bind=0.0.0.0:8000 \
+     --chdir=/home/site/wwwroot app:app
