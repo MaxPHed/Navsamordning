@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify, render_template, session
+from flask import Blueprint, request, jsonify, render_template, session, redirect, url_for
 from functools import wraps
 from models import db, User, Route, Waypoint
 
@@ -146,3 +146,25 @@ def update_delete_waypoint(id):
         db.session.delete(wp)
         db.session.commit()
         return '', 204
+
+
+@bp.route('/add_user', methods=['GET', 'POST'])
+def add_user():
+    if request.method == 'POST':
+        username = request.form['username']
+        email = request.form['email']
+        phone = request.form['phone']
+        password = request.form['password']
+
+        # Check if user already exists
+        if User.query.filter_by(username=username).first() is not None:
+            return jsonify({'error': 'Username already exists'}), 400
+
+        new_user = User(username=username, email=email, phone=phone)
+        new_user.set_password(password)
+        db.session.add(new_user)
+        db.session.commit()
+
+        return redirect(url_for('main.index'))  # Redirect to the index page or any other page you prefer
+
+    return render_template('add_user.html')
