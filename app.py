@@ -5,7 +5,7 @@ from flask_migrate import Migrate
 from dotenv import load_dotenv
 
 load_dotenv()
-app = Flask(__name__, template_folder='/templates', static_folder='/static')
+app = Flask(__name__, template_folder='templates', static_folder='static')
 
 if 'WEBSITE_HOSTNAME' not in os.environ:
     print("Loading config.development and environment variables from .env file.")
