@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 from math import radians, cos, sin, sqrt, atan2
 import json
 from werkzeug.security import generate_password_hash, check_password_hash
-from app import db  # Importera db från den initierade appen
+from applicationFolder.extensions import db
 
 
 class User(db.Model):

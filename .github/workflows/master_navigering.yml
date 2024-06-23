@@ -7,7 +7,7 @@ name: Build and deploy Python applicationFolder to Azure Web App - navigering
 on:
   push:
     branches:
-      - master
+      - main
   workflow_dispatch:
 
 jobs:
