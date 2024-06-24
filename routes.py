@@ -5,6 +5,54 @@ from models import db, User, Route, Waypoint
 bp = Blueprint('main', __name__)
 
 
+@bp.route('/')
+def index():
+    # user_id = session.get('user_id')
+    # if not user_id:
+    #    return jsonify({'error': 'User not logged in'}), 401
+    # user = User.query.get(user_id)
+    user = User(username="JohnDoe", email="johndoe@example.com", phone="1234567890")
+    return render_template('index.html', user=user.to_dict())
+
+
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'user_id' not in session:
+            return jsonify({'error': 'Login required'}), 401
+        return f(*args, **kwargs)
+
+    return decorated_function
+
+
+@bp.route('/register', methods=['POST'])
+def register():
+    data = request.get_json()
+    username = data['username']
+    email = data['email']
+    password = data['password']
+
+    if User.query.filter_by(username=username).first() is not None:
+        return jsonify({'error': 'Username already exists'}), 400
+
+    new_user = User(username=username, email=email)
+    new_user.set_password(password)
+    db.session.add(new_user)
+    db.session.commit()
+
+    return jsonify({'message': 'User registered successfully'}), 201
+
+
+@bp.route('/login', methods=['POST'])
+def login():
+    try:
+        session['user_id'] = 1  # Hardcoded user ID for testing
+        return jsonify({'message': 'Logged in successfully'}), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+@bp.route('/routes', methods=['GET', 'POST'])
 # @login_required
 def manage_routes():
     try:
